@@ -6,7 +6,7 @@ import com.gary.myspring.pojo.ClassA;
 import com.gary.myspring.service.StudentService;
 
 /**
- * describe:
+ * describe:IOC测试
  *
  * @author gary
  * @date 2019/01/16

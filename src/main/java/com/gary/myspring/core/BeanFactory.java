@@ -24,7 +24,7 @@ public class BeanFactory {
 
     public static void scanPackage(String packageName) {
         ProxyBeanFactory proxyBeanFactory = new ProxyBeanFactory();
-        List<BeanMethodDefinition> multiParaMethodList = new ArrayList();
+        List<BeanMethodDefinition> multiParaMethodList = new ArrayList<>();
 
         new PackageScanner() {
             @Override
@@ -158,7 +158,6 @@ public class BeanFactory {
         MyProxy myProxy = proxyBeanFactory.getMyProxy(klass.getName());
 
         if (!myProxy.isInjected()) {
-            //TODO 注入
             injectBean(proxyBeanFactory, klass, myProxy.getObject());
         }
         return myProxy.getProxy();

@@ -1,5 +1,7 @@
 package com.gary.myspring.core;
 
+import com.gary.myspring.exception.BeanAlreadyDefineException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,7 +38,7 @@ public class ProxyBeanFactory {
         return BEAN_MAP.get(className);
     }
 
-    protected boolean creteCGLibProxy(Object object) {
+    protected boolean creteCGLibProxy(Object object) throws Exception {
         return cglibProxy(object, object.getClass());
     }
 
@@ -44,7 +46,7 @@ public class ProxyBeanFactory {
         return cglibProxy(klass.newInstance(), klass);
     }
 
-    protected boolean createJDKproxy(Object object) {
+    protected boolean createJDKproxy(Object object) throws Exception {
         return jdkProxy(object, object.getClass());
     }
 
@@ -52,14 +54,16 @@ public class ProxyBeanFactory {
         return jdkProxy(klass.newInstance(), klass);
     }
 
-    private boolean jdkProxy(Object object, Class<?> klass) {
-        String className = klass.getName();
+    private void judge(String className) throws BeanAlreadyDefineException {
         MyProxy myProxy = BEAN_MAP.get(className);
         if (myProxy != null) {
-            //TODO 重复 抛异常
-            return false;
+            throw new BeanAlreadyDefineException();
         }
+    }
 
+    private boolean jdkProxy(Object object, Class<?> klass) throws BeanAlreadyDefineException {
+        String className = klass.getName();
+        judge(className);
         ProxyFactory proxyFactory = new ProxyFactory();
         proxyFactory.getJDKProxy(object, klass);
         BEAN_MAP.put(className, proxyFactory.getMyProxy());
@@ -67,14 +71,9 @@ public class ProxyBeanFactory {
         return true;
     }
 
-    private boolean cglibProxy(Object object, Class<?> klass) {
+    private boolean cglibProxy(Object object, Class<?> klass) throws BeanAlreadyDefineException {
         String className = klass.getName();
-        MyProxy myProxy = BEAN_MAP.get(className);
-        if (myProxy != null) {
-            //TODO 重复 抛异常
-            return false;
-        }
-
+        judge(className);
         ProxyFactory proxyFactory = new ProxyFactory();
         proxyFactory.getCGLIBProxy(object, klass);
         BEAN_MAP.put(className, proxyFactory.getMyProxy());
