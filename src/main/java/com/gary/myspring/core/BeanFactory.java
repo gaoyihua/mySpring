@@ -1,9 +1,11 @@
 package com.gary.myspring.core;
 
+import com.gary.myspring.annotation.Autowired;
 import com.gary.myspring.annotation.Bean;
 import com.gary.myspring.annotation.Component;
 import com.gary.util.PackageScanner;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
@@ -124,14 +126,41 @@ public class BeanFactory {
         return flag;
     }
 
+    private static void injectBean(ProxyBeanFactory proxyBeanFactory, Class<?> klass, Object object) {
+        Field[] fields = klass.getDeclaredFields();
+        MyProxy selfProxy = proxyBeanFactory.getMyProxy(klass.getName());
+        selfProxy.setInjected(true);
+        for (Field field : fields) {
+            if (!field.isAnnotationPresent(Autowired.class)) {
+                continue;
+            }
+
+            Class<?> beanClass = field.getType();
+            MyProxy fieldProxy = proxyBeanFactory.getMyProxy(beanClass.getName());
+            Object obj = fieldProxy.getObject();
+            System.out.println(klass.getName() + ":" + beanClass.getName() + ":" + fieldProxy.isInjected() + ":" + field);
+
+            if (!fieldProxy.isInjected()) {
+                injectBean(proxyBeanFactory, beanClass, obj);
+            }
+
+            field.setAccessible(true);
+            try {
+                field.set(object, obj);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static <T> T getBean(Class<?> klass) {
         ProxyBeanFactory proxyBeanFactory = new ProxyBeanFactory();
         MyProxy myProxy = proxyBeanFactory.getMyProxy(klass.getName());
 
-        if (myProxy.isInjected()) {
+        if (!myProxy.isInjected()) {
             //TODO 注入
+            injectBean(proxyBeanFactory, klass, myProxy.getObject());
         }
-        T proxy = myProxy.getProxy();
-        return proxy;
+        return myProxy.getProxy();
     }
 }

@@ -2,6 +2,8 @@ package com.gary.myspring.test;
 
 import com.gary.myspring.core.BeanFactory;
 import com.gary.myspring.dao.StudentDao;
+import com.gary.myspring.pojo.ClassA;
+import com.gary.myspring.service.StudentService;
 
 /**
  * describe:
@@ -12,7 +14,10 @@ import com.gary.myspring.dao.StudentDao;
 public class TestForIOC {
     public static void main(String[] args) {
         BeanFactory.scanPackage("com.gary.myspring");
-        StudentDao studentDao = BeanFactory.getBean(StudentDao.class);
-        System.out.println(studentDao.getStudentById("123"));
+        /*StudentService studentService = BeanFactory.getBean(StudentService.class);
+        studentService.getStudentById("123");*/
+        ClassA classA = BeanFactory.getBean(ClassA.class);
+        System.out.println(classA.getClassb().getStudentDao());
+        System.out.println(classA.getClassb().getClassc().getStudentDao());
     }
 }
