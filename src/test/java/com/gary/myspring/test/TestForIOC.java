@@ -11,7 +11,7 @@ import com.gary.myspring.dao.StudentDao;
  */
 public class TestForIOC {
     public static void main(String[] args) {
-        BeanFactory.scanPackage("com.gary.myspring.dao");
+        BeanFactory.scanPackage("com.gary.myspring");
         StudentDao studentDao = BeanFactory.getBean(StudentDao.class);
         System.out.println(studentDao.getStudentById("123"));
     }

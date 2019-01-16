@@ -11,11 +11,25 @@ import java.util.Map;
  */
 public class ProxyBeanFactory {
     private static final Map<String, MyProxy> BEAN_MAP;
+    private static final Map<String, String> BEAN_NAME_MAP;
     static {
         BEAN_MAP = new HashMap<>();
+        BEAN_NAME_MAP = new HashMap<>();
     }
 
     public ProxyBeanFactory() {
+    }
+
+    protected void addBeanName(String baenName, String className) {
+        String orgclassName = BEAN_NAME_MAP.get(baenName);
+        if (orgclassName != null) {
+            //TODO BeanName重复 解决方法：1.抛出异常
+        }
+        BEAN_NAME_MAP.put(baenName, className);
+    }
+
+    protected String getBaenClassName(String beanName) {
+        return BEAN_NAME_MAP.get(beanName);
     }
 
     public MyProxy getMyProxy(String className) {

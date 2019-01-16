@@ -1,7 +1,10 @@
 package com.gary.myspring.dao;
 
+import com.gary.myspring.annotation.Bean;
 import com.gary.myspring.annotation.Component;
 import com.gary.myspring.pojo.Student;
+import com.gary.myspring.pojo.Teacher;
+
 /**
  * describe:测试Dao
  *
@@ -12,6 +15,11 @@ import com.gary.myspring.pojo.Student;
 public class StudentDao {
 
 	public StudentDao() {
+	}
+
+	@Bean
+	public Teacher createTeacher(Student student) {
+		return new Teacher();
 	}
 
 	public Student getStudentById(String stuId) {

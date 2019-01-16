@@ -1,10 +1,14 @@
 package com.gary.myspring.pojo;
+
+import com.gary.myspring.annotation.Component;
+
 /**
  * describe:学生类
  *
  * @author gary
  * @date 2019/1/15
  */
+@Component
 public class Student {
 	private String stuId;
 	private String name;
