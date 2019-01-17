@@ -47,25 +47,25 @@ public class ProxyFactory {
         enhancer.setCallback(new MethodInterceptor() {
             @Override
             public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
-                return doInvoke(object, method, objects);
+                return doInvoke(klass, object, method, objects);
             }
         });
         return (T) enhancer.create();
     }
 
-    Object doInvoke(Object object, Method method, Object[] args) {
+    Object doInvoke(Class<?> klass, Object object, Method method, Object[] args) {
         Object result = null;
         //前置
-        if (myProxy.doBefore(method, args) == false) {
+        if (myProxy.doBefore(klass, method, args) == false) {
             return null;
         }
         try {
             result = method.invoke(object, args);
             //后置
-            myProxy.doAfter(method, result);
+            myProxy.doAfter(klass, method, result);
         } catch (Throwable e) {
             //异常拦
-            myProxy.doDealException(method, e);
+            myProxy.doDealException(klass, method, e);
             e.printStackTrace();
         }
 
@@ -80,7 +80,7 @@ public class ProxyFactory {
                 new InvocationHandler() {
                     @Override
                     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                        return doInvoke(object, method, args);
+                        return doInvoke(klass, object, method, args);
                     }
                 }
 

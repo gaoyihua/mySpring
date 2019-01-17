@@ -19,10 +19,9 @@ public class StudentService {
 	}
 	
 	public Student getStudentById(String id) {
-		//TODO 测试
 		System.out.println(this.getClass());
-		System.out.println(studentDao.getStudentById("123"));
-		return null;
+		//int a = 1 / 0;
+		return studentDao.getStudentById("123");
 	}
 	
 }
