@@ -31,7 +31,13 @@ public class StudentLogger {
 	}
 
 	@After(klass= StudentService.class, method="getStudentById", parameterTypes = {String.class})
-	public Student afterStudentService(Student student) {
+	public Student afterStudentService1(Student student) {
+		System.out.println("后置拦截到学生:" + student);
+		return student;
+	}
+
+	@After(klass= StudentService.class, method="getStudentById", parameterTypes = {String.class})
+	public Student afterStudentService2(Student student) {
 		System.out.println("后置拦截到学生:" + student);
 		return student;
 	}

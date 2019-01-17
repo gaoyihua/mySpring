@@ -56,7 +56,13 @@ public class MyProxy implements IProxy {
             return result;
         }
 
+        boolean first = true;
         do {
+            if (!first) {
+                if (chain.getNextChain() != null) {
+                    chain = chain.getNextChain();
+                }
+            }
             IntercepterMethodDefinition methodDefination = chain.getIntercepterMethodDefinition();
             Method intercepterMethod = methodDefination.getMethod();
             Object intercepterObject = methodDefination.getObject();
@@ -65,9 +71,7 @@ public class MyProxy implements IProxy {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            if (chain.getNextChain() != null) {
-                chain = chain.getNextChain();
-            }
+            first = false;
         } while (chain.hasNext());
 
         return result;
@@ -82,7 +86,13 @@ public class MyProxy implements IProxy {
             return ;
         }
 
+        boolean first = true;
         do {
+            if (!first) {
+                if (chain.getNextChain() != null) {
+                    chain = chain.getNextChain();
+                }
+            }
             IntercepterMethodDefinition methodDefination = chain.getIntercepterMethodDefinition();
             Method intercepterMethod = methodDefination.getMethod();
             Object intercepterObject = methodDefination.getObject();
@@ -91,9 +101,7 @@ public class MyProxy implements IProxy {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            if (chain.getNextChain() != null) {
-                chain = chain.getNextChain();
-            }
+            first = false;
         } while (chain.hasNext());
     }
 
