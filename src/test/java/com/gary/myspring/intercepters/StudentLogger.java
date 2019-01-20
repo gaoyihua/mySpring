@@ -20,25 +20,25 @@ public class StudentLogger {
 	
 	@Before(klass= StudentService.class, method="getStudentById")
 	public boolean beforeStudentService1(String id) {
-		System.out.println("置前拦截到学号:" + id);
+		System.out.println("1置前拦截到学号:" + id);
 		return true;
 	}
 
 	@Before(klass= StudentService.class, method="getStudentById")
 	public boolean beforeStudentService2(String id) {
-		System.out.println("置前拦截到学号:" + id);
+		System.out.println("2置前拦截到学号:" + id);
 		return true;
 	}
 
 	@After(klass= StudentService.class, method="getStudentById", parameterTypes = {String.class})
 	public Student afterStudentService1(Student student) {
-		System.out.println("后置拦截到学生:" + student);
+		System.out.println("1后置拦截到学生:" + student);
 		return student;
 	}
 
 	@After(klass= StudentService.class, method="getStudentById", parameterTypes = {String.class})
 	public Student afterStudentService2(Student student) {
-		System.out.println("后置拦截到学生:" + student);
+		System.out.println("2后置拦截到学生:" + student);
 		return student;
 	}
 

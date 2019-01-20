@@ -18,32 +18,31 @@ public class MyProxy implements IProxy {
         IntercepterFactory intercepterFactory = new IntercepterFactory();
         IntercepterTargetDefinition itd = new IntercepterTargetDefinition(klass, method);
         Chain chain = intercepterFactory.getBeforeIntercepterList(itd);
-        if (chain == null) {
-            return true;
-        }
-        boolean first = true;
-        do {
-            if (!first) {
-                if (chain.getNextChain() != null) {
-                    chain = chain.getNextChain();
-                }
-            }
-            IntercepterMethodDefinition methodDefination = chain.getIntercepterMethodDefinition();
-            Method intercepterMethod = methodDefination.getMethod();
-            Object intercepterObject = methodDefination.getObject();
-            boolean result = false;
-            try {
-                result = (Boolean) intercepterMethod.invoke(intercepterObject, args);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            if (!result) {
-                return false;
-            }
-            first = false;
-        } while (chain.hasNext());
-
-        return true;
+        return chain.doBefore(klass, method, args);
+//        if (chain == null) {
+//            return true;
+//        }
+//        boolean first = true;
+//        do {
+//            if (!first) {
+//                if (chain.getNextChain() != null) {
+//                    chain = chain.getNextChain();
+//                }
+//            }
+//            IntercepterMethodDefinition methodDefination = chain.getIntercepterMethodDefinition();
+//            Method intercepterMethod = methodDefination.getMethod();
+//            Object intercepterObject = methodDefination.getObject();
+//            boolean result = false;
+//            try {
+//                result = (Boolean) intercepterMethod.invoke(intercepterObject, args);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            if (!result) {
+//                return false;
+//            }
+//            first = false;
+//        } while (chain.hasNext());
     }
 
     @Override
@@ -51,30 +50,29 @@ public class MyProxy implements IProxy {
         IntercepterFactory intercepterFactory = new IntercepterFactory();
         IntercepterTargetDefinition itd = new IntercepterTargetDefinition(klass, method);
         Chain chain = intercepterFactory.getAfterIntercepterList(itd);
-        System.out.println(chain);
-        if (chain == null) {
-            return result;
-        }
+//        if (chain == null) {
+//            return result;
+//        }
+//
+//        boolean first = true;
+//        do {
+//            if (!first) {
+//                if (chain.getNextChain() != null) {
+//                    chain = chain.getNextChain();
+//                }
+//            }
+//            IntercepterMethodDefinition methodDefination = chain.getIntercepterMethodDefinition();
+//            Method intercepterMethod = methodDefination.getMethod();
+//            Object intercepterObject = methodDefination.getObject();
+//            try {
+//                result = intercepterMethod.invoke(intercepterObject, result);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            first = false;
+//        } while (chain.hasNext());
 
-        boolean first = true;
-        do {
-            if (!first) {
-                if (chain.getNextChain() != null) {
-                    chain = chain.getNextChain();
-                }
-            }
-            IntercepterMethodDefinition methodDefination = chain.getIntercepterMethodDefinition();
-            Method intercepterMethod = methodDefination.getMethod();
-            Object intercepterObject = methodDefination.getObject();
-            try {
-                result = intercepterMethod.invoke(intercepterObject, result);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            first = false;
-        } while (chain.hasNext());
-
-        return result;
+        return chain.doAfter(klass, method, result);
     }
 
     @Override
@@ -82,27 +80,28 @@ public class MyProxy implements IProxy {
         IntercepterFactory intercepterFactory = new IntercepterFactory();
         IntercepterTargetDefinition itd = new IntercepterTargetDefinition(klass, method);
         Chain chain = intercepterFactory.getExceptionIntercepterList(itd);
-        if (chain == null) {
-            return ;
-        }
-
-        boolean first = true;
-        do {
-            if (!first) {
-                if (chain.getNextChain() != null) {
-                    chain = chain.getNextChain();
-                }
-            }
-            IntercepterMethodDefinition methodDefination = chain.getIntercepterMethodDefinition();
-            Method intercepterMethod = methodDefination.getMethod();
-            Object intercepterObject = methodDefination.getObject();
-            try {
-                intercepterMethod.invoke(intercepterObject, throwable);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            first = false;
-        } while (chain.hasNext());
+//        if (chain == null) {
+//            return ;
+//        }
+//
+//        boolean first = true;
+//        do {
+//            if (!first) {
+//                if (chain.getNextChain() != null) {
+//                    chain = chain.getNextChain();
+//                }
+//            }
+//            IntercepterMethodDefinition methodDefination = chain.getIntercepterMethodDefinition();
+//            Method intercepterMethod = methodDefination.getMethod();
+//            Object intercepterObject = methodDefination.getObject();
+//            try {
+//                intercepterMethod.invoke(intercepterObject, throwable);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            first = false;
+//        } while (chain.hasNext());
+        chain.doDealException(klass, method, throwable);
     }
 
     public boolean isInjected() {

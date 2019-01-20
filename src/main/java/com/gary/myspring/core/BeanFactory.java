@@ -138,7 +138,6 @@ public class BeanFactory {
             Class<?> beanClass = field.getType();
             MyProxy fieldProxy = proxyBeanFactory.getMyProxy(beanClass.getName());
             Object obj = fieldProxy.getObject();
-            System.out.println(klass.getName() + ":" + beanClass.getName() + ":" + fieldProxy.isInjected() + ":" + field);
 
             if (!fieldProxy.isInjected()) {
                 injectBean(proxyBeanFactory, beanClass, obj);

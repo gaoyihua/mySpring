@@ -29,7 +29,6 @@ public class IntercepterScan {
                     for (Method method : methods) {
                         if (method.isAnnotationPresent(Before.class)) {
                             Before before = method.getAnnotation(Before.class);
-                            //TODO 处理before拦截方法
                             dealBeforeIntercepter(klass, object, method, before);
                         } else if (method.isAnnotationPresent(After.class)) {
                             After after = method.getAnnotation(After.class);
