@@ -111,6 +111,10 @@ public class BeanFactory {
 
     private static boolean createBean(ProxyBeanFactory proxyBeanFactory, Class<?> klass, Object object, String name) throws Exception {
         //TODO 选择使用jdk代理或者cglib代理
+        //因为如果用jdk代理需要类实现接口，
+        //而使用CGLib的话可以不实现接口，主要是对指定的类生成一个子类，覆盖其中方法
+        // 覆盖其中的方法实现增强，但是因为采用的是继承，所以类或者方法不要声明成final
+        //所以暂时都使用CGLib动态代理
         boolean flag = false;
         if (object != null) {
             flag = proxyBeanFactory.creteCGLibProxy(object);
